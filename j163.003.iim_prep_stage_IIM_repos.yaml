@@ -1,0 +1,113 @@
+---
+- name: "j163.002.iim_prep_stage_IIM_repos.yaml{{':'}} stage the content on the Ansible control machine to the Ansible managed node."
+  hosts: all
+  gather_facts: no
+  tasks:
+  - import_role:
+      name: common
+
+  - name: "{{ ( shbx.fs_root, shbx.dir, shbx.dir_install, ) | join('/') }}{{':'}} add directory."
+    file:
+      state: directory
+      owner: "{{ shbx.usr }}"
+      group: "{{ shbx.grp }}"
+      mode:  "{{ shbx.mode }}"
+      path:  "{{ ( shbx.fs_root, shbx.dir, shbx.dir_install, ) | join('/') }}"
+
+  - name: "{{ ( shbx.fs_root, shbx.dir, shbx.dir_install, ) | join('/') }}{{':'}} add sub-directories."
+    file:
+      state: directory
+      owner: "{{ shbx.usr }}"
+      group: "{{ shbx.grp }}"
+      mode:  "{{ shbx.mode }}"
+      path:  "{{ ( shbx.fs_root, shbx.dir, shbx.dir_install, item, ) | join('/') }}"
+    loop:
+    - was855_base
+    - was855_java7
+
+  - name: "{{ ( shbx.fs_root, shbx.dir, shbx.dir_maint, ) | join('/') }}{{':'}} add directory."
+    file:
+      state: directory
+      owner: "{{ shbx.usr }}"
+      group: "{{ shbx.grp }}"
+      mode:  "{{ shbx.mode }}"
+      path:  "{{ ( shbx.fs_root, shbx.dir, shbx.dir_maint, ) | join('/') }}"
+
+  - name: "{{ ( shbx.fs_root, shbx.dir, shbx.dir_maint, ) | join('/') }}{{':'}} add sub-directories."
+    file:
+      state: directory
+      owner: "{{ shbx.usr }}"
+      group: "{{ shbx.grp }}"
+      mode:  "{{ shbx.mode }}"
+      path:  "{{ ( shbx.fs_root, shbx.dir, shbx.dir_maint, item, ) | join('/') }}"
+    loop:
+    - fp_was_85504
+    - fp_was_85516
+    - fp_java7_sr10_fp45
+
+  - name: Stage the PPA, SAC, content on the Ansible control machine to the Ansible managed node.
+    unarchive:
+      remote_src: False
+      src: "{{ item.src }}"
+      dest: "{{ ( shbx.fs_root,
+                  shbx.dir,
+                  shbx.dir_install,
+                  item.dst, ) | join('/') }}"
+    register: rgstr_unrchv_ppa
+    loop:
+    - src: /Users/mbp7/DownloadDirector/WAS_V8.5.5__1_OF_3__MPML.zip
+      dst: was855_base 
+    - src: /Users/mbp7/DownloadDirector/WAS_V8.5.5__2_OF_3__MPML.zip
+      dst: was855_base 
+    - src: /Users/mbp7/DownloadDirector/WAS_V8.5.5__3_OF_3__MPML.zip
+      dst: was855_base 
+    - src: /Users/mbp7/DownloadDirector/WS_SDK_JAVA_TEV7.0_1OF3_WAS_8.5.5.zip
+      dst: was855_java7
+    - src: /Users/mbp7/DownloadDirector/WS_SDK_JAVA_TEV7.0_2OF3_WAS_8.5.5.zip
+      dst: was855_java7
+    - src: /Users/mbp7/DownloadDirector/WS_SDK_JAVA_TEV7.0_3OF3_WAS_8.5.5.zip
+      dst: was855_java7
+  - name: "all{{':'}} \"rgstr_unrchv\" register of previous task."
+    debug:
+      var: rgstr_unrchv_ppa
+      verbosity: 1
+
+  - name: Stage the Fix Pack content on the Ansible control machine to the Ansible managed node.
+    unarchive:
+      remote_src: False
+      src: "{{ item.src }}"
+      dest: "{{ ( shbx.fs_root,
+                  shbx.dir,
+                  shbx.dir_maint,
+                  item.dst, ) | join('/') }}"
+    register: rgstr_unrchv_fp
+    loop:
+    - src: /Users/mbp7/Downloads/esd_FixCentral/fp_was_85504/8.5.5-WS-WAS-FP0000004-part1.zip
+      dst: fp_was_85504
+    - src: /Users/mbp7/Downloads/esd_FixCentral/fp_was_85504/8.5.5-WS-WAS-FP0000004-part2.zip
+      dst: fp_was_85504
+    - src: /Users/mbp7/Downloads/esd_FixCentral/fp_was_85516/8.5.5-WS-WAS-FP016-part1.zip
+      dst: fp_was_85516
+    - src: /Users/mbp7/Downloads/esd_FixCentral/fp_was_85516/8.5.5-WS-WAS-FP016-part2.zip
+      dst: fp_was_85516
+    - src: /Users/mbp7/Downloads/esd_FixCentral/fp_was_85516/8.5.5-WS-WAS-FP016-part3.zip
+      dst: fp_was_85516
+    - src: /Users/mbp7/Downloads/esd_FixCentral/fp_java7_sr10_fp45/7.0.10.45-WS-IBMWASJAVA-Linux.zip
+      dst: fp_java7_sr10_fp45
+  - name: "all{{':'}} \"rgstr_unrchv\" register of previous task."
+    debug:
+      var: rgstr_unrchv_fp
+      verbosity: 1
+
+  - name: "Report on directory tree{{':'}} \"tree -d -L 3 {{ ( shbx.fs_root, shbx.dir, ) | join('/') }}\""
+    command: "tree -d -L 3 {{ ( shbx.fs_root, shbx.dir, ) | join('/') }}"
+    register: rgstr_shbx_tr
+    tags:
+    - shbx_tr
+  - name: "stderr{{':'}} \"rgstr_javaVer\" register of previous task."
+    debug:
+      var: rgstr_shbx_tr.stdout
+      verbosity: 1
+    tags:
+    - shbx_tr
+...

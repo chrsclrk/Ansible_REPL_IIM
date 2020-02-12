@@ -1,0 +1,47 @@
+---
+- name: "j163.005.iim_prep_iim_listAvailablePackages.yaml{{':'}} Install IBM Installation Manager."
+  hosts: all
+  gather_facts: no
+  vars:
+    imcl: "{{ '/'.join( (ibm.fs_root, 
+                         iim.dir, 
+                         iim.install_loc, 
+                         'eclipse/tools/imcl', ) ) }}"
+  tasks:
+  - import_role:
+      name: common
+
+  - name: "Validate \"imcl\" install readiness with \"listAvailablePackages\" from IBM hosted IIM repositories."
+    become: yes
+    become_user: "{{ iim.usr }}"
+    command:
+      argv:
+      - "{{ imcl }}"
+      - "listAvailablePackages"
+      - '-features'
+      - '-long'
+      - '-showPlatforms'
+      - '-repositories' 
+      - "{{ ( '/opt/shbx/esd_PPA_SAC/was855_base',
+              '/opt/shbx/esd_PPA_SAC/was855_java7',
+              '/opt/shbx/esd_FixCentral/fp_was_85504',
+              '/opt/shbx/esd_FixCentral/fp_was_85516',
+              '/opt/shbx/esd_FixCentral/fp_java7_sr10_fp45', ) | join(',') }}"
+      - '-showProgress'
+      # - '-showVerboseProgress' 
+    register: rgstr_imcl_lstAvlPkg
+    tags:
+    - lstAvlPkg
+  - name: "cmd{{':'}} \"rgstr_imcl_lstAvlPkg\" register of previous task."
+    debug:
+      var: rgstr_imcl_lstAvlPkg.cmd
+      verbosity: 1
+    tags:
+    - lstAvlPkg
+  - name: "stdout{{':'}} \"rgstr_imcl_lstAvlPkg\" register of previous task."
+    debug:
+      var: rgstr_imcl_lstAvlPkg.stdout
+      verbosity: 1
+    tags:
+    - lstAvlPkg
+...

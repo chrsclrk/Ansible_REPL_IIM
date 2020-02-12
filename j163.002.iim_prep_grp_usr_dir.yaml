@@ -1,0 +1,81 @@
+---
+- name: "j163.001.iim_prep_grp_usr_dir.yaml{{':'}} stage the content on the Ansible control machine to the Ansible managed node."
+  hosts: all
+  gather_facts: no
+  tasks:
+  - import_role:
+      name: common
+
+  - name: "Add groups as pre-req for creating users{{':'}} iimgrp, ndgrp."
+    group:
+      state: present
+      name: "{{ item }}"
+    loop:
+      - ibmgrp
+      - iimgrp
+      - ndgrp
+      - shbx
+  
+  - name: "Add users as pre-req for creating file system directories{{':'}} ibmusr."
+    user:
+      state: present
+      name:  "{{ ibm.usr }}"
+      group: "{{ ibm.grp }}"
+
+  - name: "Add users as pre-req for creating file system directories{{':'}} iimusr."
+    user:
+      state: present
+      name:  "{{ iim.usr }}"
+      group: "{{ iim.grp }}"
+      groups: "{{ iim.grps }}"
+  - authorized_key:
+      user: "{{ iim.usr }}"
+      state: present
+      key: "{{ iim.key }}"
+
+  - name: "Add users as pre-req for creating file system directories{{':'}} ndusr."
+    # https://docs.ansible.com/ansible/latest/modules/user_module.html
+    user:
+      state: present
+      name:  "{{ nd.usr }}"
+      group: "{{ nd.grp }}"
+      groups: "{{ nd.grps }}"
+  - authorized_key:
+      user: "{{ nd.usr }}"
+      state: present
+      key: "{{ nd.key }}"
+
+  - name: Add IBM directory to /opt with owner "ibmusr".
+    # https://docs.ansible.com/ansible/latest/modules/file_module.html#file-module
+    file:
+      state: directory
+      owner: "{{ ibm.usr }}"
+      group: "{{ ibm.grp }}"
+      mode:  "{{ ibm.mode }}"
+      path:  "{{ ibm.fs_root }}"
+
+  - name: "Add {{ iim.tmp_fs }} directory with owner {{ iim.usr }}."
+    file:
+      state: directory
+      owner: "{{ iim.usr }}"
+      group: "{{ iim.grp }}"
+      mode:  "{{ iim.mode }}"
+      path:  "{{ iim.tmp_fs }}"
+  
+  - name: "{{ ( shbx.fs_root, shbx.dir, shbx.iim_dir, ) | join('/') }}{{':'}} add directory."
+    file:
+      state: directory
+      owner: "{{ shbx.usr }}"
+      group: "{{ shbx.grp }}"
+      mode:  "{{ shbx.mode }}"
+      path:  "{{ ( shbx.fs_root, shbx.dir, shbx.iim_dir, ) | join('/') }}"
+
+  - name: "Install handy RHEL packages{{':'}} unzip, tree, lsof."
+    yum:
+      name: "{{ item }}"
+      state: present
+    loop:
+      - unzip 
+      - tree
+      - lsof
+...

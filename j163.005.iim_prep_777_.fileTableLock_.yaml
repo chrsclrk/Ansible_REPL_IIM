@@ -1,0 +1,23 @@
+---
+- name: "j163.004a.iim_prep_777_.fileTableLock_.yaml{{':'}} \".fileTableLock\" permissions set to 777."
+  hosts: all
+  gather_facts: False
+  tasks:
+  - import_role:
+      name: common
+
+  - name: Avoid IIM imcl looking events. "imcl version" is run to assure ".fileTableLock" is in place.
+# https://www.ibm.com/support/pages/error-locking-not-possible-directory-when-running-group-mode
+    file: 
+      path: "{{ '/'.join((ibm.fs_root, iim.dir, iim.install_loc, 
+                          'eclipse/configuration')) }}"
+      mode: 0777
+      recurse: yes
+    register: rgstr_filelock
+    tags: filelock
+  - name: Ansible register veriable displayed from the previous task.
+    debug:
+      var: rgstr_filelock
+      verbosity: 1
+    tags: filelock
+...

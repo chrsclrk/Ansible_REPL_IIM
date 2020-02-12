@@ -1,0 +1,31 @@
+---
+- name: "j163.001.iim_prep_rhsm.yaml{{':'}} Red Hat Subscription Manager registration."
+  hosts: all
+  gather_facts: no
+  tasks:
+
+  - name: Red Hat subscription-manager
+    # https://docs.ansible.com/ansible/latest/modules/redhat_subscription_module.html?highlight=subscription%20manager
+    redhat_subscription:
+      state: present
+      username: <your_IBM_userid_here>
+      password: <your_IBM_password_here>   # An opportunity to learn Ansible Vault.
+      auto_attach: true
+    register: rgstr_rhsm
+  - name: "all{{':'}} \"rgstr_rhsm\" register of previous task."
+    debug: 
+      msg: "{{ rgstr_rhsm }}"
+      verbosity: 1
+
+  - name: "Review{{':'}} Red Hat subscription-manager list."
+    command: subscription-manager list
+    register: rgstr_rhsm_list
+    tags:
+    - rhsm_list
+  - name: "all{{':'}} \"rgstr_rhsm_list\" register of previous task."
+    debug: 
+      var: rgstr_rhsm_list.stdout
+      verbosity: 1
+    tags: 
+    - rhsm_list
+...

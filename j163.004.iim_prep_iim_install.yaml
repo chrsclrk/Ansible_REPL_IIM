@@ -1,0 +1,79 @@
+---
+- name: "j163.004.iim_prep_iim_install.yaml{{':'}} Install IBM Installation Manager."
+  hosts: all
+  gather_facts: no
+  vars:
+    shbx_imm_instllr: "{{ ( shbx.fs_root, 
+                            shbx.dir, 
+                            shbx.iim_dir, 
+                            shbx.ctrl_host_iim | basename, ) | join('/') }}"
+    imcl: "{{ '/'.join( (ibm.fs_root, 
+                         iim.dir, 
+                         iim.install_loc, 
+                         'eclipse/tools/imcl', ) ) }}"
+  tasks:
+  - import_role:
+      name: common
+
+  - name: From Ansible control_machine scp the "imcl" installer sourced from IBM Fix Central.
+    copy:
+      owner: virtuser
+      group: shbx
+      src: "{{ shbx.ctrl_host_iim }}"
+      dest: "{{ shbx_imm_instllr }}"
+
+  - name: Unarchive IIM install file.
+    become: yes
+    become_user: "{{ iim.usr }}"
+    unarchive:
+      remote_src: yes
+      src:  "{{ shbx_imm_instllr }}"
+      dest: "{{ iim.tmp_fs }}"
+
+  - name: "Tidy up{{':'}} {{ shbx_imm_instllr }} state changed to \"absent\"."
+    file:
+      path: "{{ shbx_imm_instllr }}" 
+      state: absent
+
+  - name: "Command {{ '/'.join((iim.tmp_fs, 'groupinstc')) }} for IIM install."
+    # https://docs.ansible.com/ansible/latest/modules/command_module.html#command-module
+    # https://docs.ansible.com/ansible/latest/user_guide/become.html
+    # https://www.ibm.com/support/knowledgecenter/SSDV2W_1.8.5/com.ibm.silentinstall12.doc/topics/r_install_cmd.html 
+    # https://www-01.ibm.com/support/docview.wss?uid=swg21692402
+    become: yes
+    become_user: "{{ iim.usr }}"
+    command:
+      argv:
+      - "{{ '/'.join((iim.tmp_fs, 'groupinstc')) }}"
+      - "-accessRights" 
+      - "group"
+      - "-installationDirectory"
+      - "{{ '/'.join((ibm.fs_root, iim.dir, iim.install_loc)) }}" #https://www-01.ibm.com/support/docview.wss?uid=swg21692402
+      - "-dataLocation"
+      - "{{ '/'.join((ibm.fs_root, iim.dir, iim.data_loc)) }}"    #https://www-01.ibm.com/support/docview.wss?uid=swg21692402
+      - "-acceptLicense"
+    register: rgstr_grpinstc
+    # tags: iim_groupcinstc
+  - name: Ansible register veriable displayed from the previous task.
+    debug:
+      var: rgstr_grpinstc
+      verbosity: 1
+
+  - name: "Validate \"imcl\" is in place with {{ imcl }} version."
+    command:   
+      argv:
+      - "{{ imcl }}"
+      - "version"
+    register: rgstr_iim_ver
+    tags: iim_ver
+  - name: Ansible register veriable displayed from the previous task.
+    debug:
+      var: rgstr_iim_ver.stdout
+      verbosity: 1
+    tags: iim_ver
+
+  - name: "Tidy up{{':'}} {{ iim.tmp_fs }} state changed to \"absent\"."
+    file:
+      path: "{{ iim.tmp_fs }}" 
+      state: absent
+...

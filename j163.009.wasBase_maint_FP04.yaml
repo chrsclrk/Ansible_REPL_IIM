@@ -1,0 +1,80 @@
+---
+- name: "j163.008.wasBase_maint_FP04.yaml{{':'}} imcl updateAll{{':'}} WAS 8.5.5 FixPack 04, repository /opt/shbx/esd_FixCentral/fp_was_85504."
+  hosts: all
+  gather_facts: no
+  vars:
+    imcl: "{{ '/'.join( (ibm.fs_root, 
+                         iim.dir, 
+                         iim.install_loc, 
+                         'eclipse/tools/imcl', ) ) }}"
+  tasks:
+  - import_role:
+      name: common
+
+  - name: "imcl updateAll{{':'}} install maintenance for unit-test to dev-test November 2014 levels; from IIM ESD repository sourced from Fix Central."
+    become: yes
+    become_user: "{{ iim.usr }}"
+    command:
+      argv:
+      - '{{ imcl }}'
+      - updateAll
+      - '-repositories'
+      - /opt/shbx/esd_FixCentral/fp_was_85504
+      - '-installationDirectory'
+      - "{{ '/'.join((ibm.fs_root, nd.dir_ND)) }}"
+      - "-preferences" 
+      - "{{ ( 'com.ibm.cic.common.core.preferences.keepFetchedFiles=false',
+              'com.ibm.cic.common.core.preferences.preserveDownloadedArtifacts=false',
+              'com.ibm.cic.common.core.preferences.searchForUpdates=false', ) | join(',') }}"
+      - '-acceptLicense'
+      - '-showProgress'
+      # - '-showVerboseProgress'
+    register: rgstr_mnt_updt
+    tags: mnt_updt
+  - name: "cmd{{':'}} \"rgstr_mnt_updt\" register of previous task."
+    debug:
+      var: rgstr_mnt_updt.cmd
+      verbosity: 1
+    tags: mnt_updt
+  - name: "stdout{{':'}} \"rgstr_mnt_updt\" register of previous task."
+    debug:
+      var: rgstr_mnt_updt.stdout
+      verbosity: 1
+    tags: mnt_updt
+
+  - name: "Validate \"imcl\" install action with \"listInstalledPackages\"."
+    become: yes
+    become_user: "{{ iim.usr }}"
+    command:
+      argv:
+      - "{{ imcl }}"
+      - listInstalledPackages
+      - '-verbose'
+    register: rgstr_imcl_lstInstllPkg
+    tags:
+    - lstInstllPkg
+  - name: "cmd{{':'}} \"rgstr_imcl_lstInstllPkg\" register of previous task."
+    debug:
+      var: rgstr_imcl_lstInstllPkg.cmd
+      verbosity: 1
+    tags:
+    - lstInstllPkg
+  - name: "stdout{{':'}} \"rgstr_imcl_lstInstllPkg\" register of previous task."
+    debug:
+      var: rgstr_imcl_lstInstllPkg.stdout
+      verbosity: 1
+    tags:
+    - lstInstllPkg
+
+  - name: "Validate ND install{{':'}} {{ ( ibm.fs_root, nd.dir_ND,'bin/versionInfo.sh', ) | join('/') }}"
+    command: "{{ ( ibm.fs_root, nd.dir_ND,'bin/versionInfo.sh', ) | join('/') }}"
+    register: rgstr_verInfo
+    tags:
+    - verInfo
+  - name: "stdout{{':'}} \"rgstr_verInfo\" register of previous task."
+    debug:
+      var: rgstr_verInfo.stdout
+      verbosity: 1
+    tags:
+    - verInfo
+...

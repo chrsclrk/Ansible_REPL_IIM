@@ -1,0 +1,47 @@
+---
+- name: "j163.010.java7_FP08_IBM_hosted_repository_list.yaml{{':'}} imcl listAvailablePackages{{':'}} IBM Java7 Fix Pack 08, IBM hosted IIM repository."
+  hosts: all
+  gather_facts: no
+  vars:
+    imcl: "{{ '/'.join( (ibm.fs_root, 
+                         iim.dir, 
+                         iim.install_loc, 
+                         'eclipse/tools/imcl', ) ) }}"
+  tasks:
+  - import_role:
+      name: common
+
+  - name: "Validate \"imcl\" install readiness with \"listAvailablePackages\" from IBM hosted IIM repositories."
+    become: yes
+    become_user: "{{ iim.usr }}"
+    command:
+      argv:
+      - "{{ imcl }}"
+      - "listAvailablePackages"
+      - '-features'
+      - '-long'
+      - '-showPlatforms'
+      - "-repositories" 
+      - http://www.ibm.com/software/repositorymanager/com.ibm.websphere.IBMJAVA.v70
+      - "-secureStorageFile"
+      - "{{ '/'.join(('/home', iim.usr, iim.secureStorageFile)) }}"
+      - "-masterPasswordFile"
+      - "{{ '/'.join(('/home', iim.usr, iim.ibmid.file)) }}"
+      - "-showProgress"
+      # - "-showVerboseProgress"
+    register: rgstr_imcl_lstAvlPkg
+    tags:
+    - lstAvlPkg
+  - name: "cmd{{':'}} \"rgstr_imcl_lstAvlPkg\" register of previous task."
+    debug:
+      var: rgstr_imcl_lstAvlPkg.cmd
+      verbosity: 1
+    tags:
+    - lstAvlPkg
+  - name: "stdout{{':'}} \"rgstr_imcl_lstAvlPkg\" register of previous task."
+    debug:
+      var: rgstr_imcl_lstAvlPkg.stdout
+      verbosity: 1
+    tags:
+    - lstAvlPkg
+...

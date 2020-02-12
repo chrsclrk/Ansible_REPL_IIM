@@ -1,0 +1,573 @@
+
+>>>j163 Thu, 06 Feb 2020 08:44:44 -0600  j163.001.iim_prep_rhsm.yaml
+-rw-r--r--  1 mbp7  staff  929 Feb  6 06:11 j163.001.iim_prep_rhsm.yaml
+
+PLAY [j163.001.iim_prep_rhsm.yaml: Red Hat Subscription Manager registration.] ***************************************************************************************************************************
+
+TASK [Red Hat subscription-manager] **********************************************************************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [all: "rgstr_rhsm" register of previous task.] ******************************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [Review: Red Hat subscription-manager list.] ********************************************************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [all: "rgstr_rhsm_list" register of previous task.] *************************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+PLAY RECAP ***********************************************************************************************************************************************************************************************
+10.0.0.163                 : ok=2    changed=2    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0   
+
+
+<<<j163 Thu, 06 Feb 2020 08:45:26 -0600  j163.001.iim_prep_rhsm.yaml
+
+>>>j163 Thu, 06 Feb 2020 08:45:26 -0600  j163.002.iim_prep_grp_usr_dir.yaml
+-rw-r--r--  1 mbp7  staff  2247 Feb  4 09:07 j163.002.iim_prep_grp_usr_dir.yaml
+
+PLAY [j163.001.iim_prep_grp_usr_dir.yaml: stage the content on the Ansible control machine to the Ansible managed node.] *********************************************************************************
+
+TASK [Add groups as pre-req for creating users: iimgrp, ndgrp.] ******************************************************************************************************************************************
+changed: [10.0.0.163] => (item=ibmgrp)
+changed: [10.0.0.163] => (item=iimgrp)
+changed: [10.0.0.163] => (item=ndgrp)
+changed: [10.0.0.163] => (item=shbx)
+
+TASK [Add users as pre-req for creating file system directories: ibmusr.] ********************************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [Add users as pre-req for creating file system directories: iimusr.] ********************************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [authorized_key] ************************************************************************************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [Add users as pre-req for creating file system directories: ndusr.] *********************************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [authorized_key] ************************************************************************************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [Add IBM directory to /opt with owner "ibmusr".] ****************************************************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [Add /tmp/iim directory with owner iimusr.] *********************************************************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [/opt/shbx/iim_FixCentral: add directory.] **********************************************************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [Install handy RHEL packages: unzip, tree, lsof.] ***************************************************************************************************************************************************
+changed: [10.0.0.163] => (item=unzip)
+changed: [10.0.0.163] => (item=tree)
+changed: [10.0.0.163] => (item=lsof)
+
+PLAY RECAP ***********************************************************************************************************************************************************************************************
+10.0.0.163                 : ok=10   changed=10   unreachable=0    failed=0    skipped=0    rescued=0    ignored=0   
+
+
+<<<j163 Thu, 06 Feb 2020 08:47:37 -0600  j163.002.iim_prep_grp_usr_dir.yaml
+
+>>>j163 Thu, 06 Feb 2020 08:47:37 -0600  j163.003.iim_prep_stage_IIM_repos.yaml
+-rw-r--r--  1 mbp7  staff  4190 Feb  6 06:13 j163.003.iim_prep_stage_IIM_repos.yaml
+
+PLAY [j163.002.iim_prep_stage_IIM_repos.yaml: stage the content on the Ansible control machine to the Ansible managed node.] *****************************************************************************
+
+TASK [/opt/shbx/esd_PPA_SAC: add directory.] *************************************************************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [/opt/shbx/esd_PPA_SAC: add sub-directories.] *******************************************************************************************************************************************************
+changed: [10.0.0.163] => (item=was855_base)
+changed: [10.0.0.163] => (item=was855_java7)
+
+TASK [/opt/shbx/esd_FixCentral: add directory.] **********************************************************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [/opt/shbx/esd_FixCentral: add sub-directories.] ****************************************************************************************************************************************************
+changed: [10.0.0.163] => (item=fp_was_85504)
+changed: [10.0.0.163] => (item=fp_was_85516)
+changed: [10.0.0.163] => (item=fp_java7_sr10_fp45)
+
+TASK [Stage the PPA, SAC, content on the Ansible control machine to the Ansible managed node.] ***********************************************************************************************************
+changed: [10.0.0.163] => (item={'src': '/Users/mbp7/DownloadDirector/WAS_V8.5.5__1_OF_3__MPML.zip', 'dst': 'was855_base'})
+changed: [10.0.0.163] => (item={'src': '/Users/mbp7/DownloadDirector/WAS_V8.5.5__2_OF_3__MPML.zip', 'dst': 'was855_base'})
+changed: [10.0.0.163] => (item={'src': '/Users/mbp7/DownloadDirector/WAS_V8.5.5__3_OF_3__MPML.zip', 'dst': 'was855_base'})
+changed: [10.0.0.163] => (item={'src': '/Users/mbp7/DownloadDirector/WS_SDK_JAVA_TEV7.0_1OF3_WAS_8.5.5.zip', 'dst': 'was855_java7'})
+changed: [10.0.0.163] => (item={'src': '/Users/mbp7/DownloadDirector/WS_SDK_JAVA_TEV7.0_2OF3_WAS_8.5.5.zip', 'dst': 'was855_java7'})
+changed: [10.0.0.163] => (item={'src': '/Users/mbp7/DownloadDirector/WS_SDK_JAVA_TEV7.0_3OF3_WAS_8.5.5.zip', 'dst': 'was855_java7'})
+
+TASK [all: "rgstr_unrchv" register of previous task.] ****************************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [Stage the Fix Pack content on the Ansible control machine to the Ansible managed node.] ************************************************************************************************************
+changed: [10.0.0.163] => (item={'src': '/Users/mbp7/Downloads/esd_FixCentral/fp_was_85504/8.5.5-WS-WAS-FP0000004-part1.zip', 'dst': 'fp_was_85504'})
+changed: [10.0.0.163] => (item={'src': '/Users/mbp7/Downloads/esd_FixCentral/fp_was_85504/8.5.5-WS-WAS-FP0000004-part2.zip', 'dst': 'fp_was_85504'})
+changed: [10.0.0.163] => (item={'src': '/Users/mbp7/Downloads/esd_FixCentral/fp_was_85516/8.5.5-WS-WAS-FP016-part1.zip', 'dst': 'fp_was_85516'})
+changed: [10.0.0.163] => (item={'src': '/Users/mbp7/Downloads/esd_FixCentral/fp_was_85516/8.5.5-WS-WAS-FP016-part2.zip', 'dst': 'fp_was_85516'})
+changed: [10.0.0.163] => (item={'src': '/Users/mbp7/Downloads/esd_FixCentral/fp_was_85516/8.5.5-WS-WAS-FP016-part3.zip', 'dst': 'fp_was_85516'})
+changed: [10.0.0.163] => (item={'src': '/Users/mbp7/Downloads/esd_FixCentral/fp_java7_sr10_fp45/7.0.10.45-WS-IBMWASJAVA-Linux.zip', 'dst': 'fp_java7_sr10_fp45'})
+
+TASK [all: "rgstr_unrchv" register of previous task.] ****************************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [Report on directory tree: "tree -d -L 3 /opt/shbx"] ************************************************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [stderr: "rgstr_javaVer" register of previous task.] ************************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+PLAY RECAP ***********************************************************************************************************************************************************************************************
+10.0.0.163                 : ok=7    changed=7    unreachable=0    failed=0    skipped=3    rescued=0    ignored=0   
+
+
+<<<j163 Thu, 06 Feb 2020 09:14:38 -0600  j163.003.iim_prep_stage_IIM_repos.yaml
+
+>>>j163 Thu, 06 Feb 2020 09:14:38 -0600  j163.004.iim_prep_iim_install.yaml
+-rw-r--r--  1 mbp7  staff  2687 Feb  6 06:23 j163.004.iim_prep_iim_install.yaml
+
+PLAY [j163.004.iim_prep_iim_install.yaml: Install IBM Installation Manager.] *****************************************************************************************************************************
+
+TASK [From Ansible control_machine scp the "imcl" installer sourced from IBM Fix Central.] ***************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [Unarchive IIM install file.] ***********************************************************************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [Tidy up: /opt/shbx/iim_FixCentral/agent.installer.linux.gtk.x86_64_1.9.1001.20191112_1525.zip state changed to "absent".] **************************************************************************
+changed: [10.0.0.163]
+
+TASK [Command /tmp/iim/groupinstc for IIM install.] ******************************************************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [Ansible register veriable displayed from the previous task.] ***************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [Validate "imcl" is in place with /opt/IBM/IIM/installLocation/eclipse/tools/imcl version.] *********************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [Ansible register veriable displayed from the previous task.] ***************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [Tidy up: /tmp/iim state changed to "absent".] ******************************************************************************************************************************************************
+changed: [10.0.0.163]
+
+PLAY RECAP ***********************************************************************************************************************************************************************************************
+10.0.0.163                 : ok=6    changed=6    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0   
+
+
+<<<j163 Thu, 06 Feb 2020 09:15:53 -0600  j163.004.iim_prep_iim_install.yaml
+
+>>>j163 Thu, 06 Feb 2020 09:15:53 -0600  j163.005.iim_prep_777_.fileTableLock_.yaml
+-rw-r--r--  1 mbp7  staff  754 Feb  6 06:18 j163.005.iim_prep_777_.fileTableLock_.yaml
+
+PLAY [j163.004a.iim_prep_777_.fileTableLock_.yaml: ".fileTableLock" permissions set to 777.] *************************************************************************************************************
+
+TASK [Avoid IIM imcl looking events. "imcl version" is run to assure ".fileTableLock" is in place.] ******************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [Ansible register veriable displayed from the previous task.] ***************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+PLAY RECAP ***********************************************************************************************************************************************************************************************
+10.0.0.163                 : ok=1    changed=1    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0   
+
+
+<<<j163 Thu, 06 Feb 2020 09:15:55 -0600  j163.005.iim_prep_777_.fileTableLock_.yaml
+
+>>>j163 Thu, 06 Feb 2020 09:15:55 -0600  j163.006.iim_prep_iim_listAvailablePackages.yaml
+-rw-r--r--@ 1 mbp7  staff  1442 Feb  6 06:25 j163.006.iim_prep_iim_listAvailablePackages.yaml
+
+PLAY [j163.005.iim_prep_iim_listAvailablePackages.yaml: Install IBM Installation Manager.] ***************************************************************************************************************
+
+TASK [Validate "imcl" install readiness with "listAvailablePackages" from IBM hosted IIM repositories.] **************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [cmd: "rgstr_imcl_lstAvlPkg" register of previous task.] ********************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [stdout: "rgstr_imcl_lstAvlPkg" register of previous task.] *****************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+PLAY RECAP ***********************************************************************************************************************************************************************************************
+10.0.0.163                 : ok=1    changed=1    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0   
+
+
+<<<j163 Thu, 06 Feb 2020 09:16:02 -0600  j163.006.iim_prep_iim_listAvailablePackages.yaml
+
+>>>j163 Thu, 06 Feb 2020 09:16:02 -0600  j163.007.wasBase_install_855.yaml
+-rw-r--r--  1 mbp7  staff  3005 Feb  6 06:21 j163.007.wasBase_install_855.yaml
+
+PLAY [imcl install: CRM2SML IBM WebSphere Application Server V8.5.5 Base from ESD, PPA, repository.] *****************************************************************************************************
+
+TASK [/opt/IBM/IIM/installLocation/eclipse/tools/imcl: install IBM WebSphere Application Server V8.5.5] **************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [cmd: "rgstr_nd_instl" register of previous task.] **************************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [stdout: "rgstr_nd_instl" register of previous task.] ***********************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [Validate "imcl" install action with "listInstalledPackages".] **************************************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [cmd: "rgstr_imcl_lstInstllPkg" register of previous task.] *****************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [stdout: "rgstr_imcl_lstInstllPkg" register of previous task.] **************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [Validate ND install: /opt/IBM/wasBase/bin/versionInfo.sh] ******************************************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [stdout: "rgstr_verInfo" register of previous task.] ************************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [Report "java -version": /opt/IBM/wasBase/java/bin/java -version] ***********************************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [stderr: "rgstr_javaVer" register of previous task.] ************************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+PLAY RECAP ***********************************************************************************************************************************************************************************************
+10.0.0.163                 : ok=4    changed=4    unreachable=0    failed=0    skipped=6    rescued=0    ignored=0   
+
+
+<<<j163 Thu, 06 Feb 2020 09:18:08 -0600  j163.007.wasBase_install_855.yaml
+
+>>>j163 Thu, 06 Feb 2020 09:18:08 -0600  j163.008.java7_install.yaml
+-rw-r--r--  1 mbp7  staff  3048 Feb  6 06:28 j163.008.java7_install.yaml
+
+PLAY [j163.007.java7_install.yaml: WAS 8.5.5 installs Java 1.6.0 by default, now install IBM Java 7 SDK from ESD repository.] ****************************************************************************
+
+TASK [/opt/IBM/IIM/installLocation/eclipse/tools/imcl: install "com.ibm.websphere.IBMJAVA.v70_7.0.4001.20130510_2103" from IIM ESD SAC repository.] ******************************************************
+changed: [10.0.0.163]
+
+TASK [cmd: "rgstr_java7_instl" register of previous task.] ***********************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [stdout: "rgstr_java7_instl" register of previous task.] ********************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [Validate "imcl" install action with "listInstalledPackages".] **************************************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [cmd: "rgstr_imcl_lstInstllPkg" register of previous task.] *****************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [stdout: "rgstr_imcl_lstInstllPkg" register of previous task.] **************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [Validate install: /opt/IBM/wasBase/bin/versionInfo.sh] *********************************************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [stdout: "rgstr_verInfo" register of previous task.] ************************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [Report "java -version": /opt/IBM/wasBase/java_1.7_64/bin/java -version] ****************************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [stderr: "rgstr_javaVer" register of previous task.] ************************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+PLAY RECAP ***********************************************************************************************************************************************************************************************
+10.0.0.163                 : ok=4    changed=4    unreachable=0    failed=0    skipped=6    rescued=0    ignored=0   
+
+
+<<<j163 Thu, 06 Feb 2020 09:18:34 -0600  j163.008.java7_install.yaml
+
+>>>j163 Thu, 06 Feb 2020 09:18:34 -0600  j163.009.wasBase_maint_FP04.yaml
+-rw-r--r--@ 1 mbp7  staff  2586 Feb  6 06:30 j163.009.wasBase_maint_FP04.yaml
+
+PLAY [j163.008.wasBase_maint_FP04.yaml: imcl updateAll: WAS 8.5.5 FixPack 04, repository /opt/shbx/esd_FixCentral/fp_was_85504.] *************************************************************************
+
+TASK [imcl updateAll: install maintenance for unit-test to dev-test November 2014 levels; from IIM ESD repository sourced from Fix Central.] *************************************************************
+changed: [10.0.0.163]
+
+TASK [cmd: "rgstr_mnt_updt" register of previous task.] **************************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [stdout: "rgstr_mnt_updt" register of previous task.] ***********************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [Validate "imcl" install action with "listInstalledPackages".] **************************************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [cmd: "rgstr_imcl_lstInstllPkg" register of previous task.] *****************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [stdout: "rgstr_imcl_lstInstllPkg" register of previous task.] **************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [Validate ND install: /opt/IBM/wasBase/bin/versionInfo.sh] ******************************************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [stdout: "rgstr_verInfo" register of previous task.] ************************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+PLAY RECAP ***********************************************************************************************************************************************************************************************
+10.0.0.163                 : ok=3    changed=3    unreachable=0    failed=0    skipped=5    rescued=0    ignored=0   
+
+
+<<<j163 Thu, 06 Feb 2020 09:21:07 -0600  j163.009.wasBase_maint_FP04.yaml
+
+>>>j163 Thu, 06 Feb 2020 09:21:07 -0600  j163.010.java7_iim_credentials.yaml
+-rw-r--r--  1 mbp7  staff  1371 Feb  6 08:14 j163.010.java7_iim_credentials.yaml
+
+PLAY [j163.009.java7_iim_credentials.yaml: imcl saveCredential: IIM credentials required for access to IBM hosted IIM repository.] ***********************************************************************
+
+TASK [Create "master password file" to provide a passphrase. (Ansible Vault candidate.)] *****************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [/opt/IBM/IIM/installLocation/eclipse/tools/imutilsc saveCredential.] *******************************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [debug] *********************************************************************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+PLAY RECAP ***********************************************************************************************************************************************************************************************
+10.0.0.163                 : ok=2    changed=2    unreachable=0    failed=0    skipped=1    rescued=0    ignored=0   
+
+
+<<<j163 Thu, 06 Feb 2020 09:21:23 -0600  j163.010.java7_iim_credentials.yaml
+
+>>>j163 Thu, 06 Feb 2020 09:21:23 -0600  j163.011.java7_FP08_IBM_hosted_repository_list.yaml
+-rw-r--r--  1 mbp7  staff  1474 Feb  6 06:33 j163.011.java7_FP08_IBM_hosted_repository_list.yaml
+
+PLAY [j163.010.java7_FP08_IBM_hosted_repository_list.yaml: imcl listAvailablePackages: IBM Java7 Fix Pack 08, IBM hosted IIM repository.] ****************************************************************
+
+TASK [Validate "imcl" install readiness with "listAvailablePackages" from IBM hosted IIM repositories.] **************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [cmd: "rgstr_imcl_lstAvlPkg" register of previous task.] ********************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [stdout: "rgstr_imcl_lstAvlPkg" register of previous task.] *****************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+PLAY RECAP ***********************************************************************************************************************************************************************************************
+10.0.0.163                 : ok=1    changed=1    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0   
+
+
+<<<j163 Thu, 06 Feb 2020 09:21:42 -0600  j163.011.java7_FP08_IBM_hosted_repository_list.yaml
+
+>>>j163 Thu, 06 Feb 2020 09:21:42 -0600  j163.012.java7_FP08_IBM_hosted_repository_install.yaml
+-rw-r--r--@ 1 mbp7  staff  3457 Feb  6 06:37 j163.012.java7_FP08_IBM_hosted_repository_install.yaml
+
+PLAY [j163.011.java7_FP08_IBM_hosted_repository_install.yaml: imcl install: IBM Java7 Fix Pack 08, IBM hosted IIM repository.] ***************************************************************************
+
+TASK [/opt/IBM/IIM/installLocation/eclipse/tools/imcl: install maintenance for unit-test to dev-test November 2014 levels; from IBM hosted IIM repository.] **********************************************
+changed: [10.0.0.163]
+
+TASK [cmd: "rgstr_mnt_updt" register of previous task.] **************************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [stdout: "rgstr_mnt_updt" register of previous task.] ***********************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [Validate "imcl" install action with "listInstalledPackages".] **************************************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [cmd: "rgstr_imcl_lstInstllPkg" register of previous task.] *****************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [stdout: "rgstr_imcl_lstInstllPkg" register of previous task.] **************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [Validate ND install: /opt/IBM/wasBase/bin/versionInfo.sh] ******************************************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [stdout: "rgstr_verInfo" register of previous task.] ************************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [Report "java -version": /opt/IBM/wasBase/java_1.7_64/bin/java -version] ****************************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [stderr: "rgstr_javaVer" register of previous task.] ************************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+PLAY RECAP ***********************************************************************************************************************************************************************************************
+10.0.0.163                 : ok=4    changed=4    unreachable=0    failed=0    skipped=6    rescued=0    ignored=0   
+
+
+<<<j163 Thu, 06 Feb 2020 09:22:37 -0600  j163.012.java7_FP08_IBM_hosted_repository_install.yaml
+
+>>>j163 Thu, 06 Feb 2020 09:22:37 -0600  j163.013.wasBase_maint_FP16.yaml
+-rw-r--r--  1 mbp7  staff  2586 Feb  6 06:39 j163.013.wasBase_maint_FP16.yaml
+
+PLAY [j163.012.wasBase_maint_FP16.yaml: imcl updateAll: WAS 8.5.5 FixPack 04, repository /opt/shbx/esd_FixCentral/fp_was_85516.] *************************************************************************
+
+TASK [imcl updateAll: install maintenance for unit-test to dev-test November 2014 levels; from IIM ESD repository sourced from Fix Central.] *************************************************************
+changed: [10.0.0.163]
+
+TASK [cmd: "rgstr_mnt_updt" register of previous task.] **************************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [stdout: "rgstr_mnt_updt" register of previous task.] ***********************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [Validate "imcl" install action with "listInstalledPackages".] **************************************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [cmd: "rgstr_imcl_lstInstllPkg" register of previous task.] *****************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [stdout: "rgstr_imcl_lstInstllPkg" register of previous task.] **************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [Validate ND install: /opt/IBM/wasBase/bin/versionInfo.sh] ******************************************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [stdout: "rgstr_verInfo" register of previous task.] ************************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+PLAY RECAP ***********************************************************************************************************************************************************************************************
+10.0.0.163                 : ok=3    changed=3    unreachable=0    failed=0    skipped=5    rescued=0    ignored=0   
+
+
+<<<j163 Thu, 06 Feb 2020 09:26:09 -0600  j163.013.wasBase_maint_FP16.yaml
+
+>>>j163 Thu, 06 Feb 2020 09:26:09 -0600  j163.014.java7_maint_SR10_FP45.yaml
+-rw-r--r--  1 mbp7  staff  3245 Feb  6 06:43 j163.014.java7_maint_SR10_FP45.yaml
+
+PLAY [j163.013.java7_maint_SR10_FP45.yaml: update to IBM Java7 SR10 FP45, IIM ESD repository /opt/shbx/esd_FixCentral/fp_java7_sr10_fp45.] ***************************************************************
+
+TASK [imcl install: install maintenance for unit-test to dev-test November 2014 levels; from IBM hosted IIM repository.] *********************************************************************************
+changed: [10.0.0.163]
+
+TASK [cmd: "rgstr_mnt_updt" register of previous task.] **************************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [stdout: "rgstr_mnt_updt" register of previous task.] ***********************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [Validate "imcl" install action with "listInstalledPackages".] **************************************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [cmd: "rgstr_imcl_lstInstllPkg" register of previous task.] *****************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [stdout: "rgstr_imcl_lstInstllPkg" register of previous task.] **************************************************************************************************************************************
+ok: [10.0.0.163] => 
+  rgstr_imcl_lstInstllPkg.stdout: |-
+    [Shared]
+    Shared resources directory: /home/iimusr/IBM/IMShared
+  
+    [Package group]
+    Name: IBM Installation Manager
+    Installation directory: /opt/IBM/IIM/installLocation/eclipse
+    Translations: German (de), Norwegian (no), Finnish (fi), Russian (ru), Croatian (hr), Brazilian Portuguese (pt_BR), French (fr), Hungarian (hu), Traditional Chinese (zh_TW), Traditional Chinese (zh_HK), Slovak (sk), Slovenian (sl), Swedish (sv), Korean (ko), Greek (el), English (en), Italian (it), Hebrew (iw), Simplified Chinese (zh), Spanish (es), Czech (cs), Arabic (ar), Thai (th), Japanese (ja), Polish (pl), Danish (da), Dutch (nl), Turkish (tr)
+    Architecture: 64-bit
+  
+    [Package]
+    Name: IBM Installation Manager (com.ibm.cic.agent)
+    Version: 1.9.1.1 (1.9.1001.20191112_1525)
+    Repository: /tmp/iim
+    Features:
+        None
+    Fixes:
+        None
+    Rollback versions:
+        None
+  
+    [Package group]
+    Name: IBM WebSphere Application Server V8.5
+    Installation directory: /opt/IBM/wasBase
+    Translations:
+  
+    [Package]
+    Name: IBM WebSphere Application Server (com.ibm.websphere.BASE.v85)
+    Version: 8.5.5.16 (8.5.5016.20190801_0951)
+    Repository: /opt/shbx/esd_FixCentral/fp_was_85516
+    Features:
+        IBM 64-bit WebSphere SDK for Java (com.ibm.sdk.6_64bit)
+        EJBDeploy tool for pre-EJB 3.0 modules (ejbdeploy)
+        Embeddable EJB container (embeddablecontainer)
+        Sample applications (samples)
+    Fixes:
+        None
+    Rollback versions:
+        8.5.5.4 (8.5.5004.20141119_1746)
+        8.5.5.0 (8.5.5000.20130514_1044)
+  
+    [Package]
+    Name: IBM WebSphere SDK Java Technology Edition (Optional) (com.ibm.websphere.IBMJAVA.v70)
+    Version: 7.0.10.45 (7.0.10045.20190801_0005)
+    Repository: /opt/shbx/esd_FixCentral/fp_java7_sr10_fp45
+    Features:
+        None
+    Fixes:
+        None
+    Rollback versions:
+        7.0.8.0 (7.0.8000.20141118_1016)
+        7.0.4.1 (7.0.4001.20130510_2103)
+
+TASK [Report "java -version": /opt/IBM/wasBase/java_1.7_64/bin/java -version] ****************************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [stderr: "rgstr_javaVer" register of previous task.] ************************************************************************************************************************************************
+skipping: [10.0.0.163]
+
+TASK [Validate ND install: /opt/IBM/wasBase/bin/versionInfo.sh] ******************************************************************************************************************************************
+changed: [10.0.0.163]
+
+TASK [stdout: "rgstr_verInfo" register of previous task.] ************************************************************************************************************************************************
+ok: [10.0.0.163] => 
+  rgstr_verInfo.stdout: |-
+    WVER0010I: Copyright (c) IBM Corporation 2002, 2012; All rights reserved.
+    WVER0012I: VersionInfo reporter version 1.15.1.50, dated 12/20/18
+  
+    --------------------------------------------------------------------------------
+    IBM WebSphere Product Installation Status Report
+    --------------------------------------------------------------------------------
+  
+    Report at date and time February 6, 2020 3:26:41 PM GMT
+  
+    Installation
+    --------------------------------------------------------------------------------
+    Product Directory        /opt/IBM/wasBase
+    Version Directory        /opt/IBM/wasBase/properties/version
+    DTD Directory            /opt/IBM/wasBase/properties/version/dtd
+    Log Directory            /opt/IBM/IIM/dataLocation/logs
+  
+    Product List
+    --------------------------------------------------------------------------------
+    BASE                     installed
+    IBMJAVA7                 installed
+  
+    Installed Product
+    --------------------------------------------------------------------------------
+    Name                  IBM WebSphere Application Server
+    Version               8.5.5.16
+    ID                    BASE
+    Build Level           cf161930.02
+    Build Date            8/1/19
+    Package               com.ibm.websphere.BASE.v85_8.5.5016.20190801_0951
+    Java SE Version       8
+    Architecture          x86-64 (64 bit)
+    Installed Features    IBM 64-bit WebSphere SDK for Java
+                          WebSphere Application Server Full Profile
+                          EJBDeploy tool for pre-EJB 3.0 modules
+                          Embeddable EJB container
+                          Sample applications
+  
+    Installed Product
+    --------------------------------------------------------------------------------
+    Name                  IBM WebSphere SDK Java Technology Edition (Optional)
+    Version               7.0.10.45
+    ID                    IBMJAVA7
+    Build Level           cf161930.01
+    Build Date            7/31/19
+    Package               com.ibm.websphere.IBMJAVA.v70_7.0.10045.20190801_0005
+    Architecture          x86-64 (64 bit)
+    Installed Features    IBM WebSphere SDK for Java Technology Edition 7
+  
+    --------------------------------------------------------------------------------
+    End Installation Status Report
+    --------------------------------------------------------------------------------
+
+PLAY RECAP ***********************************************************************************************************************************************************************************************
+10.0.0.163                 : ok=6    changed=4    unreachable=0    failed=0    skipped=4    rescued=0    ignored=0   
+
+
+<<<j163 Thu, 06 Feb 2020 09:26:44 -0600  j163.014.java7_maint_SR10_FP45.yaml
